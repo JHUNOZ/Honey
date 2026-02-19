@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+		Honey requires Accessibility permission to post synthetic CGEvents.
+		User must grant it manually in:
+		System Settings → Privacy & Security → Accessibility → Add Honey
+	-->
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
+	<!--
+		Sandboxing is intentionally DISABLED because:
+		- CGEvent posting to other apps requires non-sandboxed environment
+		- Carbon hotkeys require non-sandboxed environment
+		This is the same behavior as the original Windows PostMessage approach
+	-->
+</dict>
+</plist>
