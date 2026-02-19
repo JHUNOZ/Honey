@@ -1,0 +1,41 @@
+name: Build Honey macOS App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -project Honey.xcodeproj \
+            -scheme Honey \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO
+
+      - name: Zip app
+        run: |
+          APP=$(find build -name "Honey.app" -type d | head -1)
+          ditto -c -k --sequesterRsrc --keepParent "$APP" Honey-macOS.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Honey-macOS
+          path: Honey-macOS.zip
+          retention-days: 30
